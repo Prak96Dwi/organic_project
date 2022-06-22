@@ -1,0 +1,11 @@
+
+
+media/
+
+# Ignoring migration files
+migrations/
+
+# Adding .env file
+.env
+
+__pycache__/

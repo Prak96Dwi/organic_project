@@ -1,0 +1,113 @@
+{% load static %}
+
+ 
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i>prakhardwi1996@gmail.com</li>
+                            <li>Free Shipping for all Order of $99</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="img/language.png" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Hindi</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            {% if request.user.is_authenticated %}
+                            <div id="id-for-logout">
+                                <a href="{% url 'user_logout_form' %}">
+                                    <i class="fa fa-user"></i> Logout
+                                </a>
+                            </div>
+                            {% else %}
+                            <div id="id-for-login">
+                                <a href="#">
+                                    <i class="fa fa-user"></i> Login
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="header__logo">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'img/logo.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <nav class="header__menu">
+                    <ul>
+                        <li id="home"><a href="{% url 'index' %}">Home</a></li>
+                        <li id="shop"><a href="/shop/grid/h2l/">Shop</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul class="header__menu__dropdown">
+                                <li><a href="{% url 'shopping_cart_page' %}">Shoping Cart</a></li>
+                                <li><a href="{% url 'checkout_view_page' %}">Check Out</a></li>
+                                <li>
+                                    <a href="{% url 'products_like_page' %}">
+                                        Favourite Food Page
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="blog"><a href="{% url 'blog_view_page' %}">Blog</a></li>
+                        <li><a href="{% url 'contact_view_page' %}">Contact</a></li> 
+                        {% if request.user.is_admin %}
+                        <li id="dashboard">
+                            <a href="{% url 'admin_dashboard_page' %}">Dashboard</a>
+                        </li>    
+                        {% endif %}    
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-2">
+                <div class="header__cart">
+                    <ul>
+                        <li>
+                            <a href="{% url 'shopping_cart_page' %}">
+                                <i class="fa fa-shopping-bag"></i> 
+                                <span class="shopbag"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'products_like_page' %}">
+                                <i class="fa fa-heart"></i> 
+                                <span class="favprod"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- <div class="header__cart__price">item: <span>$150.00</span></div> -->
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>

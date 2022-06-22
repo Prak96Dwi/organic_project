@@ -1,0 +1,28 @@
+{% extends 'food/base.html' %}
+
+{% block body-content %}
+<div class="container">
+	<!-- Categories Section Begin -->
+    <section class="categories" style="margin-bottom: 200px;">
+        <div class="container">
+            <div class="row">
+                <div class="categories__slider owl-carousel">
+                    {% for category in categories %}
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" 
+                            data-setbg="{{ category.image.url }}">
+                            <h5>
+                                <a href="{% url 'category_edit_form' category.id %}">
+                                {{ category.name }}
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+</div>
+{% endblock body-content %}

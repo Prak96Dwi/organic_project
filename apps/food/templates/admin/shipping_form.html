@@ -1,0 +1,35 @@
+{% extends 'food/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white;" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<h2>Shipping Form</h2>
+			{{ form.errors }}
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Shipping Type</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ form.type }}
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Shipping Charge</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ form.charge }}
+				</div>
+			</div>
+			<input type="submit" name="" value="Submit">
+			
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

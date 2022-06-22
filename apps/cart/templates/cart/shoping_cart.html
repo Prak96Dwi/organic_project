@@ -1,0 +1,286 @@
+{% extends 'food/base.html' %}
+{% load static %}
+   
+{% block body-content %}
+<div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Shopping Cart</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'index' %}">Home</a>
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shoping Cart Section Begin -->
+    <section class="shoping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items.products.all %}
+                                <tr class="foodrow">
+                                    <td class="shoping__cart__item">
+                                        <img src="{{ item.food.image.url }}" 
+                                        class = "shop_prduct_img" alt="">
+                                        <h5>{{ item.food.name }}</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        $<span class="foo_pr" id="foo_id">
+                                        {{ item.food.price }}</span>
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity" data-id = "{{ item.id }}">
+                                            <div class="pro-qty">
+                                                <input type="text" id = "{{ item.id }}" 
+                                                value="{{ item.quantity }}" class="item-cls">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total change-price">
+                                        $<span id="chg-{{ item.id }}">
+                                        {{ item.food_price }}</span>
+                                    </td>
+                                    <td class="shoping__cart__item__close closebtn-cart" 
+                                        data-id = "{{ item.id }}">
+                                        <a>
+                                            <span class="icon_close"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__btns">
+                        <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a class="primary-btn cart-btn cart-btn-right upd-btn">
+                            <span class="icon_loading"></span>
+                            Upadate Cart
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Discount Codes Section -->
+                <div class="col-lg-6">
+                    <div class="shoping__continue">
+                        <div class="shoping__discount">
+                            <h5>Discount Codes</h5>
+                            <form action="#">
+                                <input type="text" placeholder="Enter your coupon code">
+                                <button type="submit" class="site-btn">APPLY COUPON</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="shoping__checkout">
+                        <h5>Cart Total</h5>
+                        <ul>
+                            <li>Subtotal(in $)
+                                <span id="subtotal-sum">
+                                {{ cart_items.sum_of_products_price }}
+                                </span>
+                            </li>
+                            <li>Total(in $)
+                                <span id="total-sum">
+                                    {{ cart_items.sum_of_products_price }}
+                                </span>
+                            </li>
+                        </ul>
+                        <a href="#" class="primary-btn proceed-to-check">
+                            PROCEED TO CHECKOUT
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock body-content %}
+
+
+{% block shopping-cart-js %}
+<script type="text/javascript">
+    $( document ).ready(function() {
+
+        // Redirect to the CHECKOUT Page
+        $(".proceed-to-check").click(function() {
+
+            // Getting Total Price of food Products
+            let totalPrice = Number(document.getElementById("total-sum").textContent)
+
+            if(totalPrice !== 0){
+
+                window.location = "{% url 'checkout_view_page' %}"
+            }else{
+                window.location = "{% url 'shopping_cart_page' %}"
+            } // if-else block closes
+
+        }) // on clicking proceed to chech button function closes
+
+        // Cart Food Item increment decrement button
+        let proQty = $('.pro-qty');
+        proQty.prepend('<span class="dec qtybtn">-</span>');
+        proQty.append('<span class="inc qtybtn">+</span>');
+        proQty.on('click', '.qtybtn', function () {
+        let $button = $(this);
+        let oldValue = $button.parent().find('input').val();
+        if ($button.hasClass('inc')) {
+            let newValue = parseFloat(oldValue) + 1;
+            // document.querySelector(".ele-cls").value = newValue;
+        }else {
+            // Don't allow decrementing below zero
+            if (oldValue > 0) {
+                let newValue = parseFloat(oldValue) - 1;
+                // document.querySelector(".ele-cls").value = newValue;
+            } else {
+                let newValue = 0;
+                // document.querySelector(".ele-cls").value = newValue;
+            };
+        } // else condition closes
+        // $button.parent().find('input').val(newVal);
+        }); // on click function closes
+
+        // Onclicking plus button
+        $(".inc").click(function() {
+            let price = $(this).parents('td').prev().children().text();
+            let total = $(this).parents('td').next().children().text();
+
+            // Get value of input after incrementing
+            let inputValue = Number($(this).prev().val()) + 1
+            $(this).prev().val(inputValue);
+            
+            let sum = Number(total) + Number(price);
+            $(this).parents('td').next().children().text(sum);
+            let subtotal = document.getElementById("subtotal-sum").textContent;
+            let total_value = Number(subtotal) + Number(price)
+
+            document.getElementById("subtotal-sum").textContent = total_value;
+            document.getElementById("total-sum").textContent = total_value;
+        }); // inc function closes 
+
+        // clicking minus button
+        $(".dec").click(function() {
+            let price = $(this).parents('td').prev().children().text();
+            let total = $(this).parents('td').next().children().text();
+
+            // Get value of input after decrementing
+            let inputValue = Number($(this).next().val()) - 1
+            $(this).next().val(inputValue);
+
+            let sum = Number(total) - Number(price);
+            if(sum <= 0) {
+                $(this).parents('td').next().children().text(0);
+            }else if(total > price) {
+                $(this).parents('td').next().children().text(sum);
+            }
+            let subtotal = document.getElementById("subtotal-sum").textContent;
+            let total_value = Number(subtotal) - Number(price)
+            if(total_value < 0) {
+                document.getElementById("subtotal-sum").textContent = subtotal;
+                document.getElementById("total-sum").textContent = subtotal;
+            }
+            else {
+                document.getElementById("subtotal-sum").textContent = total_value;
+                document.getElementById("total-sum").textContent = total_value;
+            }
+        }); // dec click function closes
+
+        // On clicking cross button
+        $(".closebtn-cart").click(function() { 
+            let foodid = $(this).data('id')
+            let food_row = $(this).parents('tr')
+
+            $.ajax({
+                type:  "GET",
+                url : "{% url "ajax_delete_product_from_cart" %}",
+                data : {
+                    'id': foodid
+                },
+                dataType: 'json',
+                success: function(data) {
+                    food_row.hide()
+
+                    let total_sum_html = ""+ data[1] + ""
+                    let number_of_product_in_cart = ""+ data[2] +""
+
+                    // Adding number_of_product_in_cart in header cart icon
+                    $(".shopbag").html(number_of_product_in_cart)
+                    
+                    $("#subtotal-sum").html(total_sum_html)
+                    $("#total-sum").html(total_sum_html)
+
+                } // success block closes
+            })  // ajax closes
+        }) // onclose button click function closes
+
+        // On clicking update button
+        $(".upd-btn").click(function() { 
+            let food_id = $(this).data('id')
+            let trdata = $(".inc").parents('tr')
+            let tr_array = [];
+            let total_sum = Number(document.getElementById("total-sum").textContent)
+
+
+            for(let ele=0; ele < trdata.length; ele++) {
+                let myid = trdata[ele].children[2].children[0].dataset["id"];
+                let myText = document.getElementById(myid).value;
+                tr_array.push({'id': myid, 'value' : myText})
+            }
+            let jsonText = JSON.stringify(tr_array);
+
+             $.ajax({
+                type:  "GET",
+                url : "{% url "ajax_update_product_from_cart" %}",
+                data : {
+                    'id': food_id,
+                    'total_sum': total_sum,
+                    'food_list': jsonText
+                },
+                dataType: 'json',
+                success: function(data) {
+
+                    data_text_var = ""+ data[0] +""
+                    $(".data-text").html(data_text_var)
+                    $('#myModal').modal('show')
+                    $('#myModal').modal('hide')
+
+                } // success block closes
+          })  // ajax closes
+        }) // onclose button click function closes
+    });
+</script>
+{% endblock shopping-cart-js %}

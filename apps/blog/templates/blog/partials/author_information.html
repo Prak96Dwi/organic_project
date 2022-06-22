@@ -1,0 +1,42 @@
+{% load static %}
+
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="blog__details__author">
+            <div class="blog__details__author__pic">
+                <img src="{% static 'img/myphoto.jpg' %}" alt="">
+            </div>
+            <div class="blog__details__author__text">
+                <a href="{% url 'users_blog_list_view' %}">
+                    <h6>Prakhar Dwivedi</h6>
+                </a>
+                <span>Admin</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="blog__details__widget">
+            <ul>
+                <li><span>Categories:</span> {{ blog_detail.blog_category }}</li>
+                <li>
+                <div class="blog__sidebar__item__tags">
+                {% for tag in tags %}
+                    <a href="#" onclick="tagNameFilterFunc('{{ tag.id }}')">
+                    {{ tag.name }}
+                    </a>
+                {% endfor %}
+                </div>
+                 </li>
+            </ul>
+            <div class="blog__details__social">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-google-plus"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

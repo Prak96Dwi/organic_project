@@ -1,0 +1,103 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block body-content %}
+<div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Favourites</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'index' %}">Home</a>
+                            <span>Favourites</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shoping Cart Section Begin -->
+    <section class="shoping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for like in likes %}
+                                <tr class="foodrow">
+                                    <td class="shoping__cart__item">
+                                        <img src="{{ like.food.image.url }}" 
+                                        class = "shop_prduct_img" alt="">
+                                        <a href="{% url 'product_detail_page' like.food.id %}">
+                                            <h5>{{ like.food.name }}</h5>
+                                        </a>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        $<span class="foo_pr" id="foo_id">
+                                        {{ like.food.price }}</span>
+                                    </td>
+                                    <td class="shoping__cart__item__close closebtn" 
+                                    data-id = "{{ like.id }}">
+                                        <a>
+                                            <span class="icon_close"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock body-content %}
+
+
+{% block shopping-cart-js %}
+<script type="text/javascript">
+$(document).ready(function(){
+        // On clicking cross button
+        $(".closebtn").click(function(){ 
+            var foodid = $(this).data('id')
+            var food_row = $(this).parents('tr')
+
+             $.ajax({
+                type:  "GET",
+                url : "{% url "ajax_food_product_delete_from_likes" %}",
+                data : {
+                    'id': foodid
+                },
+                dataType: 'json',
+                success: function(data){
+                    food_row.hide()
+                    var number_of_favourite_products = ""+ data[1] +""
+                    $(".favprod").html(number_of_favourite_products)
+
+                } // success block closes
+          })  // ajax closes
+        }) // onclose button click function closes
+})
+</script>
+{% endblock shopping-cart-js %}
+

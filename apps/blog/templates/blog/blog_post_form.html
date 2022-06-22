@@ -1,0 +1,63 @@
+{% extends 'food/base.html' %}
+
+
+
+{% block tinymce-quick-css %}
+<style type="text/css">
+.mytextarea{
+		height: 400px;
+	}
+</style>
+{% endblock tinymce-quick-css %}
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:5%; margin-right:5%; margin-top: 20px;
+		 background-color: white;" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<h2>Blog Post Form</h2>
+			{{ form.errors }}
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Blog Title</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ form.title }}
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Blog Category</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ form.category }}
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Blog Image</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ form.image }}
+				</div>
+			</div><br><br>
+
+			<div class="row form-group">
+				<div class = "col-md-12 col-bg-12 col-sm-12 col-lg-12">
+				    <label for="exampleInputUsername">
+				    <h2>Write Your Blog Content( in 20000 letters)</h2></label>
+				</div>
+				<div class = "col-md-12 col-bg-12  col-sm-12 col-lg-12">
+					{{ form.body }}
+				</div>
+			</div>
+			<input type="submit" name="" class="btn btn-primary blog-fm"  value="Submit">
+		</form>
+	</center>
+</div>
+{% endblock body-content %}
+
+
+

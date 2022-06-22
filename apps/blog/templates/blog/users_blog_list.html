@@ -1,0 +1,27 @@
+{% extends 'food/base.html' %}
+
+
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<div class="row">
+			{% for blog in object_list %}
+			<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4 user-blog">
+				<div class="card blog-card" style="width: 18rem;">
+					<img class="card-img-top blog-img" src="{{ blog.image.url }}" 
+					alt="Card image cap">
+					<div class="card-body">
+						<a href="{% url 'blog_detail_page_view' blog.id %}">
+							<h5 class="card-title">{{ blog.title }}</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</center>
+</div>
+{% endblock body-content %}

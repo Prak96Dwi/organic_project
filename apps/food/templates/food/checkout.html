@@ -1,0 +1,233 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+
+{% block body-content %}
+<div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Checkout</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'index' %}">Home</a>
+                            <span>Checkout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6>
+                        <span class="icon_tag_alt"></span> 
+                        Have a coupon? <a href="#">Click here</a> to enter your code
+                    </h6>
+                </div>
+            </div>
+            <div class="checkout__form">
+                <h4>Billing Details</h4>
+                <form action="#" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Full Name<span>*</span></p>
+                                        <input type="text" name="full_name" 
+                                        value="{{ request.user.full_name }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Country<span>*</span></p>
+                                <input type="text" name="country" value="{{ request.user.country }}">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Address<span>*</span></p>
+                                <input type="text" value="{{ request.user.addr }}"  
+                                class="checkout__input__add" name="addr">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Town/City<span>*</span></p>
+                                <input type="text" value="{{ request.user.district }}" 
+                                name="district">
+                            </div>
+                            <div class="checkout__input">
+                                <p>State<span>*</span></p>
+                                <input type="text" value="{{ request.user.state }}"
+                                name="state">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Postcode / ZIP CODE<span>*</span></p>
+                                <input type="text" placeholder="Zip Code" name="zipcode">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Phone<span>*</span></p>
+                                        <input type="text" value="{{ request.user.mobile_no }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Email<span>*</span></p>
+                                        <input type="text" name="email" 
+                                        value="{{ request.user.email }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label for="diff-acc">
+                                    Ship to a different address?
+                                    <input type="checkbox" id="diff-acc">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Order notes<span>*</span></p>
+                                <input type="text"
+                                placeholder="Notes about your order, e.g. special notes for delivery.">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4>Your Order</h4>
+                                <div class="checkout__order__products">Products <span>Total</span></div>
+                                <ul>
+                                    {% for cart_item in  cart_details.cart_products.all %}
+                                    <li>{{ cart_item.food.food_name }}(in $) x {{ cart_item.quantity }}
+                                        <span>{{ cart_item.food_price }}</span>
+                                    </li>
+                                    {% endfor %}
+                                    {% if cart_details.sum_of_products_price %}
+                                        <li>GST(in %)<span id="get-gst-val">5</span></li>
+                                    {% endif %}
+                                </ul>
+                                <input type="hidden" name="" id="cart-id" value="{{ cart_details.id }}">
+                                <div class="checkout__order__subtotal">
+                                    Subtotal(in $)
+                                    <span id="sub-total-val">
+                                    {{ cart_details.sum_of_products_price }}
+                                    </span>
+                                </div>
+                                <div class="checkout__order__total">Total(in $) including GST
+                                    <span id="total-value"></span>
+                                </div>
+                                {% if cart_details.sum_of_products_price %}
+                                <div class="checkout__input__shipping">
+                                    <label for="deliver">Shipping: </label>
+                                    <select name="ship" id="deliver" class="form-control">
+                                        {% for shipping in shipping_data %}
+                                        <option value="{{ shipping.id }}">
+                                        {{ shipping.shipping_type }} in ${{ shipping.shipping_charge }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div><br>
+                                {% endif %}
+                                <div class="checkout__input__checkbox">
+                                    <label for="payment">
+                                        Check Payment
+                                        <input type="checkbox" id="payment">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="paypal">
+                                        Paytm
+                                        <input type="checkbox" id="paypal">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="button" onclick="placeOrderFunc()">
+                                    PLACE ORDER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+</div>
+{% endblock body-content %}
+
+{% block shopping-cart-js %}
+<script type="text/javascript">
+
+    // Get value of Subtotal Price Value
+    let subtotalPrice = Number(document.getElementById("sub-total-val").textContent)
+
+    // Get GST Value 
+    let gstValue = document.getElementById("get-gst-val").textContent;
+
+    // Calculating Total Price including GST 
+    let totalPrice = Number(subtotalPrice) + subtotalPrice * gstValue / 100;
+
+    // Assigning Total Value
+    document.getElementById("total-value").textContent = totalPrice;
+
+    // On clicking cross button
+    function placeOrderFunc() {
+        // Get Cart Details id
+        let cartDetailsId = document.getElementById("cart-id").value
+        // Get Total Price 
+        let totalPrice = document.getElementById("total-value").textContent
+        // get Shipping Detail
+        let shippingDetail = document.getElementById("deliver").value
+        
+        $.ajax({
+            type:  "GET",
+            url : "{% url "ajax-update-product-in-order" %}",
+            data : {
+                'cart_details_id': cartDetailsId,
+                'total_price': totalPrice,
+                'shipping_data': shippingDetail
+            },
+            dataType: 'json',
+            success: function(data) {
+
+                data_text_var = ""+ data[0] +""
+                $(".data-text").html(data_text_var)
+                $('#myModal').modal('show')
+
+                window.location = "{% url 'thank-you-page' %}"
+
+            } // success block closes
+        })  // ajax closes
+    } // place order function closes
+</script>
+{% endblock shopping-cart-js %}
+
+{% block nav-bar-js %}
+<script type="text/javascript">
+    $( document ).ready(function() {
+
+        $(window).bind("pageshow", function(event) {
+            if (event.originalEvent.persisted) {
+            window.location.reload(); 
+            }
+        });
+
+    });
+</script>
+{% endblock nav-bar-js %}
+

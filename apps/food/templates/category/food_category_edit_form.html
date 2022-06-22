@@ -1,0 +1,39 @@
+{% extends 'food/base.html' %}
+
+
+{% block body-content %}
+<div class="container">
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+	 		background-color: white; margin-bottom: 100px;" enctype="multipart/form-data">
+		{% csrf_token %}
+		<h2>Edit Food Category</h2>
+		
+		<div class="row form-group">
+			<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+			    <label for="exampleInputUsername">Food Category Name</label>
+			</div>
+			<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+				<input type="text" name="category_name" class="form-control" 
+				value="{{food_category.name}}" 
+				maxlength="100" 
+				required id="id_category_name">
+			</div>
+		</div>
+
+		<div class="row form-group">
+			<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+			    <label for="exampleInputUsername">Category Image</label>
+			</div>
+			<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+				<input type="file" name="cat_image" class="form-control"
+				value="{{food_category.image.path}}"
+				accept="image/*" 
+				required id="id_cat_image">
+			</div>
+		</div>
+		<input type="submit" name="" value="Save">
+	</form>
+	</center>
+</div>
+{% endblock body-content %}

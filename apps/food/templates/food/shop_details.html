@@ -1,0 +1,477 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block star-rating-css %}
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" 
+    href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+    crossorigin="anonymous"/>
+    <script src='https://kit.fontawesome.com/a076d05399.js' 
+    crossorigin='anonymous'>
+    </script>
+    <link rel="stylesheet" type="text/css" 
+    href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+{% endblock star-rating-css %}
+
+{% block body-content %}
+<div>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2  id = "catyji" data-cat = "{{ food.category }}">
+                        {{ food.name }}
+                        </h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'index' %}">Home</a>
+                            <a href="#" id="shop-cat">Category</a>
+                            <span>{{ food.name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+        <div class="container">
+            <div class="row ">
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__item">
+                            <img class="product__details__pic__item--large"
+                                src="{{ food.image.url }}" alt="">
+                        </div>
+                        <div class="product__details__pic__slider owl-carousel">
+                            {% for food in foods %}
+                                <a href="{% url 'product_detail_page' food.id %}">
+                                    <img data-imgbigurl="{{ food.image.url }}"
+                                        src="{{ food.image.url }}" alt="">
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 ratecard" data-rating = "{{ average_rate }}"
+                data-food = "{{ food.name }}">
+                    <div class="product__details__text">
+                        <h3>{{ food.name }}</h3>
+                        <div class="stars-outer">
+                            <div class="stars-inner food-name">
+                            </div>
+                            <span class="" style="margin-left: 12px;">
+                                ({{ number_of_reviews }} reviews)
+                            </span>
+                        </div>
+                        <div class="product__details__price">
+                            <span  class = "text-clss">
+                                ${{ food.price }}
+                            </span>
+                                ${{ food.calculate_discount_price }}
+                        </div>
+                        <p>{{ food.detail }}</p>
+                        {% if request.user.is_authenticated %}
+                            <span class="review-link revform">
+                                <a href="#rev-form" id="food-review-{{ food.id }}">Give your reviews</a>
+                            </span><br>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                            <span class="review-link rating-form">
+                                <a href="#h">Give your ratings</a>
+                            </span><br>
+                        {% endif %}
+                        
+                        <!-- Food Rating Form Begin -->
+                        {% include 'food/partials/food_rating_form.html' %}
+                        <!-- Food Rating Form End -->
+
+                        <br>
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input type="text" id="qty-value" value="1">
+                                </div>
+                            </div>
+                        </div>
+                        <a onclick="addCartFunc('{{food.id}}')" class="primary-btn adcart">
+                            ADD TO CARD
+                        </a>
+                        <div class="heart-icon btn btn-light" onclick="addLikedFunc('{{food.id}}')">
+                            <button class="icon_heart_alt btn ">
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>Availability</b> <span>{{ food.availability }}</span></li>
+                            <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp>
+                            </span></li>
+                            <li><b>Weight</b> <span>{{ food.weight }}</span></li>
+                            <li><b>Share on</b>
+                                <div class="share">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Food Review Form Begin -->
+                {% include 'food/partials/food_review_form.html' %}
+                <!-- Food Review Form End -->
+
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                                    aria-selected="true" id="desc-id" onclick="showDescFunc()">Description
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                                    aria-selected="false" id="info-id" onclick="showInfoFunc()">
+                                    Information
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                                    aria-selected="false" id="rev-id" onclick="showReviewFunc()">
+                                    Reviews 
+                                    <span>({{number_of_reviews}})</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <h6>Products Description</h6>
+                                    <p>{{food.detail}}</p>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <h6>Products Infomation</h6>
+                                    <p>
+                                        Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                                        Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                                        sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                                        eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                                        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                                        Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                                        Proin eget tortor risus.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                <div class="product__details__tab__desc">
+                                    <h6>Products Reviews</h6>
+                                    {% for review in reviews %}
+                                        <div class="card review-cls" 
+                                            style="width: 900px; height: 100px">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    {{review.reviewer.full_name}}
+                                                </h5>
+                                                <p class="card-text">
+                                                    {{review.review_text}}
+                                                </p>
+                                            </div>
+                                        </div><br>
+                                    {% endfor %}
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- Product Details Section End -->
+
+    <!-- Related Product Section Begin -->
+    <section class="related-product">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title related__product__title">
+                        <h2>Related Product</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for food in foods %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{{ food.image.url }}">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">{{ food.name }}</a></h6>
+                            <h5>{{ food.price }}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Related Product Section End -->
+</div>
+{% endblock body-content %}
+
+
+{% block ajax-cart-js %}
+<script type="text/javascript">
+
+    $("#shop-cat").click(function() {
+        let urlPath = $("#catyji").data('cat')
+        window.location = "/shop/grid/h2l/?cat="+urlPath
+    })
+
+    // function to toggle review form
+    $(".revform").click(function() {
+        $(".revtext").toggle()
+    })
+
+    // function to toggle rating form
+    $(".rating-form").click(function() {
+        $("#ratingForm").toggle()
+    })
+    
+
+    // function to show product information tab
+    function showInfoFunc() {
+        $("#info-id").tab('show')
+    }
+
+    // function to show product review tab
+    function showReviewFunc() {
+        $("#rev-id").tab('show')
+    }
+
+    // function to show product description tab
+    function showDescFunc() {
+        $("#desc-id").tab('show')
+    }
+
+    // When star rating submit button is clicked
+    function onRateSubmitFunc(newid) {
+        let rateValue = $("#ratingForm :radio:checked").val()
+
+         $.ajax({
+            type:  "GET",
+            url : "{% url "add_food_product_rate" %}",
+            data : {
+                'food_id': newid,
+                'rate': rateValue
+            },
+            dataType: 'json',
+            success: function(data) {
+
+                // Constructing the suggestion engine
+                alert(data[0])
+
+            } // success block closes
+        })  // ajax closes
+
+    } // Star rating submit button function closes
+    
+
+    // function for adding food product to cart
+    function addCartFunc(newid) {
+        let quantity = document.getElementById("qty-value").value
+
+        $.ajax({
+            type:  "GET",
+            url : "{% url "add_food_product_to_cart" %}",
+            data : {
+                'food_id': newid,
+                'quantity': quantity
+            },
+            dataType: 'json',
+            success: function(data) {
+
+                // Constructing the suggestion engine
+                data_text_var = ""+ data[0] +""
+                if (data_text_var == "Please create an account"){
+                    $(".login-text").html(data_text_var)
+                    $('#myModal2').modal('show')
+                        
+                }else{
+                    $(".data-text").html(data_text_var)
+                    $('#myModal').modal('show')
+                }
+                
+                var html = ""+data[1]+""
+                $(".shopbag").html(html)      
+
+            } // success block closes
+        })  // ajax closes
+    }
+
+    // function to add food product as liked
+    function addLikedFunc(newid) {
+
+        $.ajax({
+            type:  "GET",
+            url : "{% url "add_food_product_liked" %}",
+            data : {
+                'food_id': newid
+            },
+            dataType: 'json',
+            success: function(data){
+
+                // Constructing the suggestion engine
+                data_text_var = ""+ data[0] +""
+                if (data_text_var == "Please create an account"){
+                    $(".login-text").html(data_text_var)
+                    $('#myModal2').modal('show')
+                        
+                }else{
+                    $(".data-text").html(data_text_var)
+                    $('#myModal').modal('show')
+                }
+                
+                
+                var number_of_favourite_products = ""+ data[1] +""
+                $(".favprod").html(number_of_favourite_products)
+                          
+            } // success block closes
+        })  // ajax closes
+    } // add liked function closes
+</script>
+{% endblock ajax-cart-js %}
+
+{% block shopping-cart-js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+
+
+        // Hide review form
+        $(".revtext").hide()
+
+        // Hide rating form
+        $("#ratingForm").hide()
+
+        var proQty = $('.pro-qty');
+        proQty.prepend('<span class="dec qtybtn">-</span>');
+        proQty.append('<span class="inc qtybtn">+</span>');
+        proQty.on('click', '.qtybtn', function () {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 0) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 0;
+            };
+        }
+        $button.parent().find('input').val(newVal);
+        });
+
+        // Onclicking plus button
+        $(".inc").click(function(){
+            var price = $(this).parents('td').prev().children().text();
+            var total = $(this).parents('td').next().children().text();
+            var sum = Number(total) + Number(price);
+            $(this).parents('td').next().children().text(sum);
+            var subtotal = document.getElementById("subtotal-sum").textContent;
+            var total_value = Number(subtotal) + Number(price)
+
+        }); // inc function closes 
+
+        // clicking minus button
+        $(".dec").click(function(){
+            var price = $(this).parents('td').prev().children().text();
+            var total = $(this).parents('td').next().children().text();
+            var sum = Number(total) - Number(price);
+            if(sum <= 0){
+                $(this).parents('td').next().children().text(0);
+            }else if(total > price){
+                $(this).parents('td').next().children().text(sum);
+            }
+            var subtotal = document.getElementById("subtotal-sum").textContent;
+            var total_value = Number(subtotal) - Number(price)
+            if(total_value < 0){
+                document.getElementById("subtotal-sum").textContent = subtotal;
+                document.getElementById("total-sum").textContent = subtotal;
+            }
+            else{
+                document.getElementById("subtotal-sum").textContent = total_value;
+                document.getElementById("total-sum").textContent = total_value;
+            }
+        }); // dec click function closes
+    }); // document ready function closes
+</script>
+{% endblock shopping-cart-js %}
+
+
+
+{% block star-rating-js %}
+<script type="text/javascript">
+    $( document ).ready(function() {
+
+    let foodRating = $(".ratecard").data('rating');
+    let foodName = $(".ratecard").data('food');
+
+    
+    let myRating = {
+        foodName: foodRating
+    };
+
+    // Total Stars
+    const starTotal = 5;
+
+
+    // Run getRatings when DOM Loads
+    document.addEventListener('DOMContentLoaded', getRatings());
+
+    // Get getRatings
+    function getRatings(){
+
+        for(let element in myRating){
+
+            // Get Percentage
+            const starPercentage = (myRating[element] / starTotal) * 100;
+            const starSecondPercentage = (starPercentage * starPercentage/100)
+            const starSecPercentage = starSecondPercentage + '%'
+
+
+            // Round to nearest 10
+            // const starPercentageRounded = `${Math.round(starSecondPercentage / 10) * 10}%`;
+            // alert(starPercentageRounded)
+
+
+            // Set width of stars-inner to Percentage
+            document.querySelector(".food-name").style.width = starSecPercentage
+            
+        } // forloop closes
+    }    // getRatings closes
+
+
+
+    }) // on document ready closes
+</script>
+{% endblock star-rating-js %}

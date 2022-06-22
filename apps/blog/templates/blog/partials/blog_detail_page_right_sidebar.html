@@ -1,0 +1,61 @@
+{% load static %}
+
+
+
+<div class="col-lg-8 col-md-7 order-md-1 order-1">
+    <div class="blog__details__text">
+        <img src="{{ blog_detail.image.url }}" alt="">
+        <p>{{ blog_detail.body|safe }}</p>
+    </div>
+    <div class="blog__details__content">
+        {% include 'blog/partials/author_information.html' %}
+    </div>
+    <div class="com-color" style="color: blue; cursor: pointer;">
+        {% include 'blog/partials/blog_comment_form.html' %}
+    </div><br>
+
+    {% load mptt_tags %}
+
+    <h3>Comments</h3><br>
+    <div>
+        {% recursetree comments %}
+            <small><b>{{ node.name.get_full_name }}</b></small>
+            <div>{{ node.content }}</div>
+            <div class="rep-cls">
+                <small>
+                    {% if request.user in node.users_liked.all %}
+                    <i class="fas thum-up fa-thumbs-up thun-cls" ></i>
+                    {% else %}
+                    <i class="fas thum-up fa-thumbs-up" 
+                    onclick="commentLikedFunc('{{ node.id }}')">
+                    </i>
+                    {% endif %}
+                    <span id="liked-{{ node.id }}">{{ node.number_of_likes }}</span>
+
+                    {% if request.user in node.users_liked.all %}
+                    <i class="fas thum-dn fa-thumbs-down"></i>
+                    {% else %}
+                    <i class="fas thum-dn fa-thumbs-down" 
+                    onclick="commentDislikedFunc('{{ node.id }}')">
+                    </i>
+                    {% endif %}
+                    <span id="disliked-{{ node.id }}">{{ node.number_of_dislikes }}</span>
+                    
+                    <div class="reply-btn" 
+                    onclick="onClickReplyBtn('{{ node.id }}')">  
+                        Reply
+                    </div>
+                </small>
+            </div>
+            <div id="{{ node.id }}" class="child-cls">
+                {% include 'blog/partials/blog_comment_reply_form.html' %}
+            </div>
+
+            {% if not node.is_leaf_node %}
+                <div class="children pl-2 pl-md-5">
+                    {{ children }}
+                </div>
+            {% endif %}
+        {% endrecursetree %}
+    </div>
+</div>

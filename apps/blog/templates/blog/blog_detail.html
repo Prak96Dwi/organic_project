@@ -1,0 +1,137 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+
+{% block body-content %}
+<div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Blog Detail Banner Begin -->
+    {% include 'blog/partials/blog_detail_page_banner.html' %}
+    <!-- Blog Detail Banner End -->
+
+    <!-- Blog Details Section Begin -->
+    <section class="blog-details spad">
+        <div class="container">
+            <div class="row">
+
+                <!-- Left SideBar Column Begin-->
+                {% include 'blog/partials/blog_left_sidebar.html' %}
+                <!-- Left SideBar Column Ends -->
+
+                <!-- Blog Detail Page Right SideBar Begin -->
+                {% include 'blog/partials/blog_detail_page_right_sidebar.html' %}
+                <!-- Blog Detail Page Right SideBar End -->
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Section End -->
+
+    <!-- Related Blog Section Begin -->
+    {% if blog_list %}
+    <section class="related-blog spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title related-blog-title">
+                        <h2>Post You May Like</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for blog in blog_list %}
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic">
+                            <img src="{{ blog.image.url }}" alt="" class="related-blog-img">
+                        </div>
+                        <div class="blog__item__text">
+                            <ul>
+                                <li><i class="fa fa-calendar-o"></i>{{ blog.date }}</li>
+                                <li><i class="fa fa-comment-o"></i> {{ blog.number_of_comments }}</li>
+                            </ul>
+                            <h5>
+                                <a href="{% url 'blog_detail_page_view' blog.id %}">
+                                {{ blog.title }}
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <!-- Related Blog Section End -->
+</div>
+{% endblock body-content %}
+
+
+{% block tag-name-filter-js %}
+<script type="text/javascript">
+    // On clicking any tag this function will invoded
+    function tagNameFilterFunc(tagid) {
+        let urlPath = "?tag="+tagid
+        window.location = "{% url 'blog_view_page' %}"+ urlPath
+    }
+
+    $(".com-inp").hide()
+
+    $(".child-cls").hide()
+
+    // On clicking give your comment this function will invoked
+    $(".comment-fm").click(function() {
+        $(".com-inp").toggle()
+    })
+
+    // When you click Reply Button this function is invoked
+    function onClickReplyBtn(nodeid) {
+        let nodeId = "#"+nodeid
+        $(nodeId).toggle()
+    }
+
+    // When comment is liked this function is invoked
+    function commentLikedFunc(nodeid) {
+
+        $.ajax({
+            type:  "GET",
+            url : "{% url "add_blog_comment_as_liked" %}",
+            data : {
+                'node_id': nodeid
+            },
+            dataType: 'json',
+            success: function(data){
+
+                let likedValue = data[0]
+                let nodeVar = "liked-"+nodeid
+                document.getElementById(nodeVar).textContent = likedValue;
+                          
+            } // success block closes
+        })  // ajax closes
+    } // add liked function closes
+
+    // When comment is disliked this function is invoked
+    function commentDislikedFunc(nodeid) {
+
+        $.ajax({
+            type:  "GET",
+            url : "{% url "add_blog_comment_as_disliked" %}",
+            data : {
+                'node_id': nodeid
+            },
+            dataType: 'json',
+            success: function(data){
+
+                let dislikedValue = data[0]
+                let nodeVar = "disliked-"+nodeid
+                document.getElementById(nodeVar).textContent = dislikedValue;
+                                          
+            } // success block closes
+        })  // ajax closes
+    } // comment disliked function closes
+</script>
+{% endblock tag-name-filter-js %}

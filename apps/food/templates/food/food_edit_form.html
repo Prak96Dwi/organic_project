@@ -1,0 +1,121 @@
+{% extends 'food/base.html' %}
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white;" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<h2>Food Edit Form</h2>
+			{{ form.errors }}
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Name</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="text" name="food_name" value="{{form.initial.name}}" 
+					class="form-control" placeholder="">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Category</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<select name="food_category" class="form-control" id="id_food_category">
+						<option value="{{data.food_category}}">{{form.initial.category}}</option>
+						{% for category in categories %}
+						  <option value="{{ele.category}}">{{category.name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Price(in rupees)</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="number" name="food_price" value="{{form.initial.price}}" 
+					class="form-control" 
+					required id="id_food_price">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Discount(in %)</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="number" name="food_discount" value="{{form.initial.discount}}" 
+					class="form-control" id="id_food_discount">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Weight(in kg)</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="number" name="food_wgt" class="form-control" value="{{form.initial.weight}}" step="any" 
+					required id="id_food_wgt">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Detail</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<textarea name="food_detail" cols="40" rows="10" value="{{form.initial.detail}}"
+					class="form-control" 
+					maxlength="2000" required id="id_food_detail"></textarea>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="image" src="{{form.initial.image.url}}" alt="Submit"
+				  style="height:100px; width:100px;">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Upload Food Image</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="file" name="food_image" class="form-control" 
+					accept="image/*" id="id_food_image" value={{food.initial.image.url}}>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					<div class="form-check">
+						<input type="checkbox" name="featured_product" 
+						value="{{form.initial.featured}}" class="form-check-input" 
+						id="id_featured_product">
+						<label class="form-check-label" for="flexCheckDefault">
+							Featured Food
+						</label>
+					</div>
+				</div>
+				<div class = "col-md-8 col-bg-8 col-sm-8 col-lg-8">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Availability</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<select name="availability" class="form-control input-group" 
+					id="id_availability">
+						<option value="----------">----------</option>
+						<option value="In Stock">In Stock</option>
+						<option value="Out of Stock">Out of Stock</option>
+					</select>
+				</div>
+			</div>
+
+			<input type="submit" name="" value="Submit">
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

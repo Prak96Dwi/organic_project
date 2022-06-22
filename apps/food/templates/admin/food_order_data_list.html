@@ -1,0 +1,30 @@
+{% extends 'food/base.html' %}
+
+
+{% block body-content %}
+<div class="container" style="margin-bottom: 100px;">
+	<center>
+		<h3>Food Ordered Data List</h3><br>
+		<table class="table table-hover">
+			<thead>
+				<th>Buyer</th>
+				<th>No. of Ordered Products</th>
+				<th>Sum of Products Price</th>
+				<th>Shipping Type</th>
+				<th>Shipping Status</th>
+			</thead>
+			<tbody>
+				{% for data in ordered_data %}
+				<tr>
+					<td>{{ data.user.full_name }}</td>
+					<td>{{ data.no_of_ordered_products }}</td>
+					<td>${{ data.sum_of_ordered_products_price }}</td>
+					<td>{{ data.shipping_data.shipping_type }}</td>
+					<td>{{ data.shipping_status }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</center>
+</div>
+{% endblock body-content %}

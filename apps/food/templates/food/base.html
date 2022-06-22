@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    {% block star-rating-css %}
+    {% endblock star-rating-css %}
+
+    {% block tinymce-quick-css %}
+    {% endblock tinymce-quick-css %}
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+    crossorigin="anonymous"/>
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+	{% block css-external-link %}
+	{% endblock css-external-link %}
+
+	<!-- Css Styles -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+</head>
+<body>
+    <!-- Header Section Begin -->
+	{% include 'food/partials/header_1.html' %}
+    <!-- Header Section End -->
+
+    <!-- Modal 1 Section Begin -->
+    {% include 'food/partials/modal_1.html' %}
+    <!-- Ṃodal 1 Section Ends -->
+
+    <!-- Modal 2 Section Begin -->
+    {% include 'food/partials/modal_2.html' %}
+    <!-- Ṃodal 2 Section Ends -->
+
+    <!-- Hero Section Begin -->
+    {% include 'food/partials/header_2.html' %}
+    <!-- Hero Section End -->
+
+	{% block body-content %}
+	{% endblock body-content %}
+
+	<!-- Footer Section Begin -->
+    {% include 'food/partials/footer.html' %}
+    <!-- Footer Section End -->
+
+	<!-- Js Plugins -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+    crossorigin="anonymous">   
+    </script>
+
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'js/mixitup.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% block shopping-cart-js %}
+    {% endblock shopping-cart-js %}
+
+    {% block ajax-cart-js %}
+    {% endblock ajax-cart-js %}
+
+    {% block ajax-delete-food-js %}
+    {% endblock ajax-delete-food-js %}
+
+    {% block star-rating-js %}
+    {% endblock star-rating-js %}
+
+    {% block nav-bar-js %}
+    {% endblock nav-bar-js %}
+
+    {% block tag-name-filter-js %}
+    {% endblock tag-name-filter-js %}
+
+    {% block ajax-search-blog-js %}
+    {% endblock ajax-search-blog-js %}
+
+    {% block blog-search-bar-js %}
+    {% endblock blog-search-bar-js %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#id-for-login").click(function() {
+                let currentPath = window.location.pathname
+                window.location.href = "{% url 'user_login_form' %}?next="+currentPath
+            })
+
+            // Hidding modal dialog box on clicking OK button
+            $("#dis-modal").click(function(){
+               $('#myModal').modal('hide')
+            });
+
+             // Hidding modal dialog box on clicking OK button
+            $("#login-modal").click(function(){
+               $('#myModal2').modal('hide')
+            });
+            
+
+            $("#dis-login").click(function(){
+                let currentPath = window.location.pathname
+                window.location.href = "{% url 'user_login_form' %}?next="+currentPath
+            });
+
+            // Ajax Call to get food product name in input box
+            $.ajax({
+                type:  "GET",
+                url : "{% url "get_food_product_name" %}",
+                data : {
+                },
+                dataType: 'json',
+                success: function(data) {
+
+                    // Constructing the suggestion engine
+                    $( ".typeahead" ).autocomplete({
+                        source: data
+                    });
+
+                } // success block closes
+            })  // ajax closes
+
+            // Ajax Call to get Categories
+            $.ajax({
+                type : "GET",
+                url :  "{% url "ajax_get_categories_name" %}",
+                data : {
+                },
+                dataType: 'json',
+                success: function(data) {
+                    
+                    let categories_choices = '<option value="" selected="selected"  class="class="arrow_carrot-down"">'+
+                                            'All Categories</option>'
+
+                    for(let i = 0; i < data.length; i++){
+                        categories_choices += "<option value="+ data[i].get_formatted_name +">"
+                                             +data[i]['name'] +"</option>"
+                    }
+                    $(".drop-btn").html(categories_choices)
+
+                } // success block closes
+            }) // ajax call closes
+        
+            // Ajax Call to get number of products in Cart 
+            $.ajax({
+                type:  "GET",
+                url : "{% url "ajax_cart_product_number" %}",
+                data : {
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let number_of_products_in_cart = ""+ data[0] + ""
+                    $(".shopbag").html(number_of_products_in_cart)
+
+                } // success block closes
+            })  // ajax closes
+
+            // Ajax Call to get number of likes of particular user            
+            $.ajax({
+                type:  "GET",
+                url : "{% url "ajax_likes_product_number" %}",
+                data : {
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let number_of_likes = ""+ data[0] + ""
+                    $(".favprod").html(number_of_likes)
+                
+                } // success block closes
+            })  // ajax closes
+
+
+            // Ajax call invoked when search button is clicked
+            $(".site-btn").click(function() {
+                let foodName = document.getElementById("food-search-text").value
+
+                $.ajax({
+                    type:  "GET",
+                    url : "{% url "search_food_product_detail" %}",
+                    data : {
+                        'food_name': foodName
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        foodId = data[0]
+                        window.location = '/food/detail/'+foodId+'/' 
+                    } // success block closes
+                })  // ajax closes
+            }); // onclick function closes
+        }) // on document ready function closes
+    </script>
+</body>
+</html>

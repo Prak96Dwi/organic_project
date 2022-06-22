@@ -1,0 +1,19 @@
+{% load static %}
+
+<section class="blog-details-hero set-bg" 
+    data-setbg="{% static 'img/blog/details/details-hero.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="blog__details__hero__text">
+                    <h2>{{ blog_detail.title }}</h2>
+                    <ul>
+                        <li>By Prakhar Dwivedi</li>
+                        <li>{{ blog_detail.date }}</li>
+                        <li>{{ blog_detail.get_number_of_comments_in_blog }} Comments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

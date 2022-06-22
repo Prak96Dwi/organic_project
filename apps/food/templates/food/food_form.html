@@ -1,0 +1,33 @@
+{% extends 'food/base.html' %}
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white;" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<p style="margin-top: 20px; margin-bottom: 20px;">
+				<h2>Food Form</h2>
+			</p>
+
+			{% for field in form %}
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">{{ field.name }}</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ field }}
+				</div>
+				{{ field.errors }}
+			</div>
+			{% endfor %}
+			
+			<input type="submit" name="" value="Submit"
+			style="margin-bottom: 50px;">
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

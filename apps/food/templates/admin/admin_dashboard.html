@@ -1,0 +1,90 @@
+{% extends 'food/base.html' %}
+
+{% block body-content %}
+<div class="container">
+		<div class="row ad-row" >
+			<div class="col">
+				<div class="card food1-card bg-primary">
+					<div class="card-body">
+					<a href="{% url 'food_form_view' %}" id="food-insert-form-id">
+						<h5 class="card-title">Food Data Insert Form</h5>
+					</a>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card food2-card bg-success">
+						<div class="card-body">
+							<a href="{% url 'food_edit_form_view' %}" >
+								<h5 class="card-title">Food Data Delete/Update Form</h5>
+							</a>
+						</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card food3-card bg-warning">
+					<div class="card-body">
+						<a href="{% url 'category_add_form' %}">
+							<h5 class="card-title">Category Add Form</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card food4-card bg-info">
+					<div class="card-body">
+						<a href="{% url 'category_list_view' %}">
+							<h5 class="card-title">Category Update/Delete Form</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col my-3">
+				<div class="card food4-card bg-info">
+					<div class="card-body">
+						<a href="{% url 'blog_post_form_view' %}">
+							<h5 class="card-title">Blog Post Form</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col my-3">
+				<div class="card food4-card bg-info">
+					<div class="card-body">
+						<a href="{% url 'blog_cat_form_view' %}">
+							<h5 class="card-title">Blog Category Form</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col my-3">
+				<div class="card food4-card bg-info">
+					<div class="card-body">
+						<a href="{% url 'shipping_form_page' %}">
+							<h5 class="card-title">Shipping Form</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col my-3">
+				<div class="card food4-card bg-info">
+					<div class="card-body">
+						<a href="{% url 'food_order_list' %}">
+							<h5 class="card-title">Food Order List</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+{% endblock body-content %}
+
+
+
+{% block nav-bar-js %}
+<script type="text/javascript">
+    let navText = document.getElementById('dashboard')
+    navText.classList.add('active')
+</script>
+{% endblock nav-bar-js %}
+

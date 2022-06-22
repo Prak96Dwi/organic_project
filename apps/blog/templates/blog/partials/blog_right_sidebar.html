@@ -1,0 +1,35 @@
+{% load static %}
+<div class="col-lg-8 col-md-7">
+    <div class="row">
+        {% for blog in blog_articles %}
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="blog__item">
+                <div class="blog__item__pic">
+                    <img src="{{ blog.image.url }}" alt="">
+                </div>
+                <div class="blog__item__text">
+                    <ul>
+                        <li>
+                            <i class="fa fa-calendar-o"></i>
+                            {{ blog.date }}
+                        </li>
+                        <li><i class="fa fa-comment-o"></i>
+                            {{ blog.get_number_of_comments_in_blog }}
+                        </li>
+                    </ul>
+                    <h5>
+                        <a href="{% url 'blog_detail_page_view' blog.id %}">
+                        {{ blog.title }}
+                        </a>
+                    </h5>
+                    <a href="{% url 'blog_detail_page_view' blog.id %}" 
+                    class="blog__btn">
+                        READ MORE 
+                        <span class="arrow_right"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

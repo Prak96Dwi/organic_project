@@ -1,0 +1,16 @@
+
+
+
+<div class="col-lg-12 revtext" id="rev-form">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+        <label for="exampleFormControlTextarea1">
+            <h4>Give Your Reviews</h4>
+        </label>
+        <textarea class="form-control" name="revew_data" 
+        id="review-form-control" rows="3"></textarea>
+        </div>
+        <input type="submit" name="" id="review-form-submit-btn-id" class="btn btn-primary">
+    </form>
+</div>

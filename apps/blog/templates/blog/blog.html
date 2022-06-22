@@ -1,0 +1,79 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+
+{% block body-content %}
+<div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Breadcrumb Section Begin -->
+    {% include 'blog/partials/blog_breadcrump.html' %}
+    <!-- Breadcrumb Section End -->
+
+    <!-- Blog Section Begin -->
+    <section class="blog spad">
+        <div class="container">
+            <div class="row">
+
+                <!-- Left SideBar Column Begin-->
+                {% include 'blog/partials/blog_left_sidebar.html' %}
+                <!-- Left SideBar Column Ends -->
+
+                <!-- Right SideBar Column Begin -->
+                {% include 'blog/partials/blog_right_sidebar.html' %}
+                <!-- Right SideBar Column Ends -->
+                
+            </div>
+        </div>
+    </section>
+    <!-- Blog Section End -->
+</div>
+{% endblock body-content %}
+
+
+
+{% block ajax-search-blog-js %}
+<script type="text/javascript">
+
+    // Ajax Call to get blog post title in input box
+    $.ajax({
+        type:  "GET",
+        url : "{% url "get_blog_post_title" %}",
+        data : {
+        },
+        dataType: 'json',
+        success: function(data) {
+
+            // Constructing the suggestion engine
+            $( ".blogtle" ).autocomplete({
+                source: data
+            });             
+
+        } // success block closes
+    })  // ajax closes
+    
+</script>
+{% endblock ajax-search-blog-js %}
+
+
+{% block nav-bar-js %}
+<script type="text/javascript">
+    // Navbar heading highlight javascript code
+    let navText = document.getElementById('blog')
+    navText.classList.add('active')
+</script>
+{% endblock nav-bar-js %}
+
+{% block tag-name-filter-js %}
+<script type="text/javascript">
+
+    function tagNameFilterFunc(tagid, tagname) {
+        let urlPath = "?tag="+tagid+"&name="+tagname
+        window.location = "{% url 'blog_view_page' %}"+ urlPath
+    }
+    
+</script>
+{% endblock tag-name-filter-js %}

@@ -1,0 +1,445 @@
+{% extends 'food/base.html' %}
+{% load static get_cat_params %}
+
+
+{% block body-content %}
+<div>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Organi Shop</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Home</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-5">
+                    <div class="sidebar">
+                        <form method="GET" id="food-filter-form">
+                            <div class="sidebar__item" id="cat-id" data-cat = "{{ request.GET.cat }}">
+                                <h4>Categories</h4>
+                                {% get_category_parameter request as category_parameter %}
+                                <ul>
+                                    {% for category in food_categories %}
+                                    <li>
+                                    <input type="checkbox" value="{{ category.name }}" 
+                                    id="{{ category.name }}" 
+                                    name="cats" 
+                                    {% if category.name in category_parameter %}
+                                    checked=""
+                                    {% endif %}>
+                                        {{ category.name }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <input type="hidden" name="" id="category-id" 
+                                value="{{ category_parameter }}">
+                            </div>
+                            <div class="sidebar__item">
+                                <h4>Price</h4>
+                                <input type="hidden" name="" id="price-id" 
+                                value="{{ request.GET.mprice }}">
+                                <div class="price-range-wrap">
+                                    <div 
+                                    class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                    data-min="0" 
+                                    data-max="{{ max_price }}">
+                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                    <span tabindex="0" 
+                                    class="ui-slider-handle ui-corner-all ui-state-default">
+                                    </span>
+                                    <span tabindex="0" 
+                                    class="ui-slider-handle ui-corner-all ui-state-default">
+                                    </span>
+                                    </div>
+                                    <div class="range-slider">
+                                        <div class="price-input">
+                                            <input type="text" name="min_price" id="minamount">
+                                            <input type="text" name = "mprice" id="maxamount">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar__item">
+                                <h4>Weight (in kg)</h4>
+                                <div class="weight-range-wrap">
+                                    <input type="hidden" name="" id="wei-id" 
+                                    value="{{ request.GET.wei }}">
+                                    <div 
+                                    class="weight-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                    data-min="0"
+                                    data-max="{{ max_weight }}">
+                                    <div class="ui-slider-range ui-corner-all ui-widget-header">
+                                    </div>
+                                    <span tabindex="0" 
+                                    class="ui-slider-handle ui-corner-all ui-state-default">
+                                    </span>
+                                    <span tabindex="0" 
+                                    class="ui-slider-handle ui-corner-all ui-state-default">
+                                    </span>
+                                    </div>
+                                    <div class="range-slider">
+                                        <div class="price-input">
+                                            <input type="text" name="min_weight" id="min-wgt">
+                                            <input type="text" name = "wei" id="max-wgt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" name="" id="" value="Filter" 
+                            class="btn btn-primary filter-btn"> 
+                        </form>
+
+                        <div class="sidebar__item">
+                            <h4>Popular Size</h4>
+                            <div class="sidebar__item__size">
+                                <label for="large">
+                                    Large
+                                    <input type="radio" id="large">
+                                </label>
+                            </div>
+                            <div class="sidebar__item__size">
+                                <label for="medium">
+                                    Medium
+                                    <input type="radio" id="medium">
+                                </label>
+                            </div>
+                            <div class="sidebar__item__size">
+                                <label for="small">
+                                    Small
+                                    <input type="radio" id="small">
+                                </label>
+                            </div>
+                            <div class="sidebar__item__size">
+                                <label for="tiny">
+                                    Tiny
+                                    <input type="radio" id="tiny">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="sidebar__item">
+                            <div class="latest-product__text">
+                                <h4>Latest Products</h4>
+                                <div class="latest-product__slider owl-carousel">
+                                    <div class="latest-prdouct__slider__item">
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="img/latest-product/lp-1.jpg" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="img/latest-product/lp-2.jpg" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="img/latest-product/lp-3.jpg" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="latest-prdouct__slider__item">
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="img/latest-product/lp-1.jpg" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="img/latest-product/lp-2.jpg" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="img/latest-product/lp-3.jpg" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-7">
+                    <div class="product__discount">
+                        <div class="section-title product__discount__title">
+                            <h2>Sale Off</h2>
+                        </div>
+                        <div class="row">
+                            <div class="product__discount__slider owl-carousel">
+                                {% for food in discount_foods %}
+                                <div class="col-lg-4">
+                                    <div class="product__discount__item">
+                                        <div class="product__discount__item__pic set-bg"
+                                            data-setbg="{{ food.image.url }}">
+                                            <div class="product__discount__percent">
+                                            -{{ food.discount }}%
+                                            </div>
+                                            <ul class="product__item__pic__hover">
+                                            <li>
+                                                <a onclick="addLikedFunc('{{food.id}}')">
+                                                    <i class="fa fa-heart"></i>
+                                                </a>
+                                            </li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li>
+                                                <a onclick="addCartFunc('{{food.id}}')">
+                                                    <div class="add-cart">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        </div>
+                                        <div class="product__discount__item__text">
+                                            <span>{{ food.category }}</span>
+                                            <h5>
+                                                <a href="{% url 'product_detail_page' food.id %}">
+                                                {{ food.name }}
+                                                </a>
+                                            </h5>
+                                            <div class="product__item__price">
+                                                ${{ food.calculate_discount_price }}
+                                                <span>${{ food.price }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5">
+                            <label for="price__id">Sort By</label>
+                            <select name="price" id="priid__id" >
+                                <option value="">
+                                    {{ filter_choice }}
+                                </option>
+                                <option value="h2l">
+                                    High to Low
+                                </option>
+                                <option value="l2h">
+                                    Low to High
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>{{ number_of_foods }}</span> Products found</h6>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="show-food-data">
+                        <div class="row food-data-row">
+                        {% for food in pages %}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" 
+                                    data-setbg="{{ food.image.url }}">
+                                        <ul class="product__item__pic__hover">
+                                            <li>
+                                                <a onclick="addLikedFunc('{{food.id}}')">
+                                                    <i class="fa fa-heart"></i>
+                                                </a>
+                                            </li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li>
+                                                <a onclick="addCartFunc('{{food.id}}')">
+                                                    <div class="add-cart">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="{% url 'product_detail_page' food.id %}">
+                                        {{ food.name }}</a></h6>
+                                        <h5>${{ food.price }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    </div>
+
+                    <div class="list-num">
+                        {% if pages.has_other_pages %}
+                          <ul class="pagination">
+                            {% if pages.has_previous %}
+                              <li><a href="?page={{ pages.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                              <li class="disabled"><span>&laquo;</span></li>
+                            {% endif %}
+
+                            {% for i in pages.paginator.page_range %}
+                              {% if pages.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span>
+                                </span></li>
+                              {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                              {% endif %}
+                            {% endfor %}
+
+                            {% if pages.has_next %}
+                              <li>
+                                <input type="hidden" name="" id="next-value" 
+                                value="{{ pages.next_page_number }}">
+                                <div id="next-page">
+                                &raquo;</div>
+                              </li>
+                            {% else %}
+                              <li class="disabled"><span>&raquo;</span></li>
+                            {% endif %} 
+
+                          </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+
+</div>
+{% endblock body-content %}
+
+
+{% block shopping-cart-js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        let category =  $("#cat-id").data("cat")
+        if (category != ''){
+            document.getElementById(category).checked = true;
+        }
+
+
+        $("#next-page").click(function() {
+            let url = new URL(window.location.href);
+            let form = $('#food-filter-form').serialize();
+            let nextPage = document.getElementById("next-value").value
+            let urlPath = '?page='+ nextPage +'&'+ form;
+            window.location = '/shop/grid/h2l/'+urlPath
+        })
+        
+        
+        $( "#priid__id" ).change(function() {
+            varfirst = document.getElementById('priid__id').value
+            url_path = '/shop/grid/'+varfirst+'/'
+            window.location = url_path
+        }); // onchange function closes
+    }); // on document ready function closes
+
+    // Adding food product as liked to a particular users
+        function addLikedFunc(newid) {
+        
+            $.ajax({
+                type:  "GET",
+                url : "{% url "add_food_product_liked" %}",
+                data : {
+                    'food_id': newid
+                },
+                dataType: 'json',
+                success: function(data){
+
+                    // Constructing the suggestion engine
+                    data_text_var = ""+ data[0] +""
+                    $(".data-text").html(data_text_var)
+
+                    // Toggle modal dialog box
+                    $('#myModal').modal('toggle')
+                
+
+                    // Adding HTML element of number of liked food Products
+                    var number_of_liked_food_products = ""+ data[1] +""
+                    $(".favprod").html(number_of_liked_food_products)
+                              
+                } // success block closes
+            })  // ajax closes
+        } // Food product liked function
+
+    // Adding product to a particular users cart
+        function addCartFunc(newid) {
+
+            $.ajax({
+                type:  "GET",
+                url : "{% url "add_food_product_to_cart" %}",
+                data : {
+                    'food_id': newid,
+                    'quantity': 1
+                },
+                dataType: 'json',
+                success: function(data) {
+
+                    // Constructing the suggestion engine
+                    data_text_var = ""+ data[0] +""
+                    $(".data-text").html(data_text_var)
+                    $('#myModal').modal('show')
+                    // $('#myModal').modal('hide')
+                    var html = ""+data[1]+""
+                    $(".shopbag").html(html)
+                              
+                } // success block closes
+            })  // ajax closes
+        } // Add food product in cart function
+</script>
+{% endblock shopping-cart-js %}
+
+{% block nav-bar-js %}
+<script type="text/javascript">
+    let navText = document.getElementById('shop')
+    navText.classList.add('active')
+</script>
+{% endblock nav-bar-js %}

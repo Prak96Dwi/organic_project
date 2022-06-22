@@ -1,0 +1,23 @@
+{% extends 'food/base.html' %}
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white; margin-bottom: 100px;" enctype="multipart/form-data">
+			{% csrf_token %}
+			<h2>Add Blog Category</h2>
+			{{ form.errors }}
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Blog Category Name</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ form.name }}
+				</div>
+			</div>
+			<input type="submit" class="btn btn-primary blog-fm" name="" value="Add Category">
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

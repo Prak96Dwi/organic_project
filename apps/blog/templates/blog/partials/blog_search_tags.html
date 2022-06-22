@@ -1,0 +1,13 @@
+
+
+
+<div class="blog__sidebar__item">
+    <h4>Search By</h4>
+    <div class="blog__sidebar__item__tags">
+        {% for tag in tags %}
+            <a href="#" onclick="tagNameFilterFunc('{{ tag.id }}', '{{ tag.name }}')">
+             {{ tag.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

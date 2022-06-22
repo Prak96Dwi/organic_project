@@ -1,0 +1,16 @@
+
+
+
+
+<div class="comment-fm">
+    <a>Write your comments</a>
+</div><br>
+<form method="POST" class="com-inp">
+	{% csrf_token %}
+	<div class="">
+	    <textarea class="form-control" id="comment-content-id" name="content" 
+	    required = 'True' rows="4" cols="10" 
+	    placeholder="Write comments here..."></textarea>
+	</div><br>
+	<input type="submit" name="" id="comment-form-submit-id" value="Submit" class="btn btn-primary">
+</form>
